@@ -1,0 +1,1 @@
+window.DICKYS_PESAPAL_CHECKOUT_URL = "";
