@@ -7,7 +7,7 @@
       name="description"
       content="Thoughtfully made, one-of-a-kind décor crafted from rescued glass in Nairobi. Shop recycled-glass terrariums, candle holders and vases."
     />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#f4f6f8" />
     <title>Dickys — A second life for glass</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,8 +18,8 @@
     <style>
       :root {
         color-scheme: light;
-        --paper: #ffffff;
-        --paper-deep: #ffffff;
+        --paper: #f4f6f8;
+        --paper-deep: #eef2f5;
         --ink: #20241f;
         --muted: #77786e;
         --line: #dedcd1;
@@ -103,7 +103,7 @@
         position: sticky;
         z-index: 20;
         top: 0;
-        background: #ffffff;
+        background: var(--paper);
       }
 
       .header-inner {
@@ -714,7 +714,7 @@
       }
 
       .quick-add:hover {
-        background: white;
+        background: var(--paper);
       }
 
       .product-card:hover .quick-add,
@@ -1730,7 +1730,7 @@
           align-items: stretch;
           gap: 0;
           padding: 7px 18px 15px;
-          background: #ffffff;
+          background: var(--paper);
         }
 
         .nav-links.open {
@@ -3021,28 +3021,20 @@
           area === "nairobi" ? (sum >= 5000 ? "Free" : "KSh 300") : "To be confirmed";
         const total = area === "nairobi" ? money(sum + (sum >= 5000 ? 0 : 300)) : `${money(sum)} + delivery`;
         return [
-          "Hello Dickys team, ✨",
-          "I’d love to order these pieces from The Glass Habitat.",
+          "Hello Dickys, I’d like to place an order:",
           "",
-          "MY SELECTION",
           ...lines,
           "",
-          "ORDER SUMMARY",
           `Subtotal: ${money(sum)}`,
           `Delivery: ${delivery}`,
           `Estimated total: ${total}`,
           "",
-          "DELIVERY DETAILS",
           `Name: ${formData.get("name")}`,
           `Phone: ${formData.get("phone")}`,
           `Email: ${formData.get("email") || "Not provided"}`,
-          `Destination: ${area === "nairobi" ? "Nairobi" : "Outside Nairobi"}`,
+          `Delivery area: ${area === "nairobi" ? "Nairobi" : "Outside Nairobi"}`,
           `Address: ${formData.get("address")}`,
-          "",
-          "PAYMENT PREFERENCE",
-          `${payment}${payment === "M-Pesa" ? " — Paybill 542542, account 98736" : ""}`,
-          "",
-          "Please confirm availability and the final delivery amount, then let me know the next steps. Thank you!",
+          `Payment: ${payment}${payment === "M-Pesa" ? " (Paybill 542542, account 98736)" : ""}`,
         ].join("\n");
       }
 
@@ -3151,17 +3143,12 @@
         const data = new FormData(event.currentTarget);
         const quantity = data.get("quantity") || "To be discussed";
         const message = [
-          "Hello Dickys team, ✨",
-          "I’d love to discuss a custom-made glass piece.",
+          "Hello Dickys, I’m interested in a custom order.",
           "",
-          "PROJECT DETAILS",
           `Name: ${data.get("name")}`,
           `Phone: ${data.get("phone")}`,
-          `Piece or collection: ${data.get("type")}`,
-          `Quantity: ${quantity}`,
-          `My idea: ${data.get("details")}`,
-          "",
-          "Please let me know what may be possible, the estimated timeline, and a quote. Thank you!",
+          `Item: ${data.get("type")} × ${quantity}`,
+          `Details: ${data.get("details")}`,
         ].join("\n");
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
         document.querySelector("#customStatus").textContent = "Your message is ready in WhatsApp. We look forward to hearing from you.";
