@@ -2624,20 +2624,23 @@
           <div class="radio-row">
             <label><input type="radio" name="payment" value="M-Pesa" checked /> I&amp;M Bank M-Pesa · Paybill 542542</label>
             <label><input type="radio" name="payment" value="PayPal" /> PayPal</label>
-            <label><input type="radio" name="payment" value="Visa / Mastercard" /> Visa / Mastercard</label>
+            <label><input type="radio" name="payment" value="Credit / debit card" id="pesapalPaymentOption" disabled /> Credit / debit card</label>
             <label><input type="radio" name="payment" value="Cash on delivery" /> Cash on delivery (Nairobi)</label>
           </div>
+          <p class="shipping-note" id="cardCheckoutNote" style="margin: 0"></p>
           <div class="checkout-total"><span id="checkoutTotalLabel">Estimated total</span><span id="checkoutTotal"></span></div>
           <p class="shipping-note" id="checkoutShippingNote" style="margin: 0"></p>
-          <button class="button" type="submit">Place order via WhatsApp</button>
+          <button class="button" type="submit" id="checkoutSubmitButton">Place order via WhatsApp</button>
         </form>
       </section>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <script src="payment-config.js"></script>
     <script>
       const WHATSAPP_NUMBER = "254728898736";
+      const PESAPAL_CHECKOUT_URL = typeof window.DICKYS_PESAPAL_CHECKOUT_URL === "string" ? window.DICKYS_PESAPAL_CHECKOUT_URL.replace(/\/+$/, "") : "";
       const STORAGE_KEY = "dickys-storefront-cart-v1";
       const PRODUCTS = [
         {
@@ -3000,13 +3003,112 @@
         } else {
           totalLabel.textContent = "Estimated total";
           total.textContent = money(sum + delivery);
-          shippingNote.textContent =
-            delivery === 0 && sum > 0
-              ? "Nairobi delivery is free on orders over KSh 5,000."
-              : "Nairobi delivery is KSh 300. Your order is confirmed with you on WhatsApp before payment.";
+          shippingNote.textContent = delivery === 0 && sum > 0
+            ? "Nairobi delivery is free on orders over KSh 5,000."
+            : "Nairobi delivery is KSh 300. Your order is confirmed with you on WhatsApp before payment.";
+        }
+        updateCardCheckoutOption();
+      }
+
+      function updateCardCheckoutOption() {
+        const cardOption = document.querySelector("#pesapalPaymentOption");
+        const area = document.querySelector("#deliveryArea").value;
+        const cardAvailable = Boolean(PESAPAL_CHECKOUT_URL) && area === "nairobi";
+        if (!cardAvailable && cardOption.checked) {
+          document.querySelector('input[name="payment"][value="M-Pesa"]').checked = true;
+        }
+        cardOption.disabled = !cardAvailable;
+        const cardSelected = cardOption.checked;
+        const emailField = document.querySelector('#checkoutForm [name="email"]');
+        emailField.required = cardSelected;
+        emailField.placeholder = cardSelected ? "Email for your Pesapal receipt" : "Email (optional)";
+        let cardNote = "Secure card checkout is being set up. Please choose another payment method for now.";
+        if (PESAPAL_CHECKOUT_URL) {
+          cardNote = "Secure card checkout by Pesapal is available for Nairobi deliveries. Enter your email to continue.";
+        }
+        if (area === "outside") {
+          cardNote = "Online card checkout is currently available for Nairobi deliveries only.";
+        }
+        document.querySelector("#cardCheckoutNote").textContent = cardNote;
+        document.querySelector("#checkoutSubmitButton").textContent = cardSelected
+          ? "Continue to secure card checkout"
+          : "Place order via WhatsApp";
+      }
+
+      async function startCardCheckout(formData) {
+        const checkoutButton = document.querySelector("#checkoutSubmitButton");
+        checkoutButton.disabled = true;
+        checkoutButton.textContent = "Connecting to secure checkout…";
+        try {
+          const response = await fetch(`${PESAPAL_CHECKOUT_URL}/api/checkout`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              area: formData.get("area"),
+              customer: {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                phone: formData.get("phone"),
+                address: formData.get("address"),
+              },
+              items: Object.entries(cart).map(([key, quantity]) => {
+                const [productId, variantIndex] = key.split("_").map(Number);
+                return { productId, variantIndex, quantity };
+              }),
+            }),
+          });
+          let result;
+          try {
+            result = await response.json();
+          } catch {
+            throw new Error("Secure checkout returned an invalid response. Please try again.");
+          }
+          if (!response.ok || typeof result.redirectUrl !== "string") {
+            throw new Error(result.error || "Secure checkout could not be started. Please try again.");
+          }
+          const redirectUrl = new URL(result.redirectUrl);
+          if (redirectUrl.protocol !== "https:" || !(redirectUrl.hostname === "pesapal.com" || redirectUrl.hostname.endsWith(".pesapal.com"))) {
+            throw new Error("Secure checkout returned an untrusted payment link.");
+          }
+          window.location.assign(redirectUrl.toString());
+        } catch (error) {
+          console.error("Secure card checkout failed.", error);
+          showToast(error instanceof Error ? error.message : "Secure checkout is unavailable. Please try again.");
+          checkoutButton.disabled = false;
+          updateCardCheckoutOption();
         }
       }
 
+      async function handlePesapalReturn() {
+        const currentUrl = new URL(window.location.href);
+        if (currentUrl.searchParams.get("payment") !== "pesapal-return") return;
+        const orderTrackingId = currentUrl.searchParams.get("OrderTrackingId") || currentUrl.searchParams.get("orderTrackingId");
+        for (const key of ["payment", "OrderTrackingId", "orderTrackingId", "OrderMerchantReference"]) {
+          currentUrl.searchParams.delete(key);
+        }
+        window.history.replaceState({}, "", currentUrl);
+        if (!orderTrackingId || !PESAPAL_CHECKOUT_URL) {
+          showToast("We couldn’t verify the card payment. Your bag is still saved; please contact us.");
+          return;
+        }
+        try {
+          const response = await fetch(`${PESAPAL_CHECKOUT_URL}/api/status?orderTrackingId=${encodeURIComponent(orderTrackingId)}`);
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || "Payment status could not be checked.");
+          if (result.status === "completed") {
+            cart = {};
+            renderCart();
+            showToast("Payment confirmed. Thank you for choosing Dickys.");
+          } else if (result.status === "pending") {
+            showToast("Your payment is still processing. Your bag is saved while we confirm it.");
+          } else {
+            showToast("Payment was not completed. Your bag is saved; you can try again.");
+          }
+        } catch (error) {
+          console.error("Payment status verification failed.", error);
+          showToast("We couldn’t verify the card payment just yet. Your bag is still saved.");
+        }
+      }
       function checkoutMessage(formData) {
         const area = formData.get("area");
         const payment = formData.get("payment");
@@ -3126,6 +3228,7 @@
       });
 
       document.querySelector("#deliveryArea").addEventListener("change", updateCheckoutTotal);
+      document.querySelectorAll('input[name="payment"]').forEach((option) => option.addEventListener("change", updateCardCheckoutOption));
 
       document.querySelector("#productSearch").addEventListener("input", renderProducts);
       document.querySelector("#searchForm").addEventListener("submit", (event) => {
@@ -3133,10 +3236,14 @@
         document.querySelector("#shop").scrollIntoView({ behavior: "smooth" });
       });
 
-      document.querySelector("#checkoutForm").addEventListener("submit", (event) => {
+      document.querySelector("#checkoutForm").addEventListener("submit", async (event) => {
         event.preventDefault();
         if (cartQuantity() === 0) return;
         const formData = new FormData(event.currentTarget);
+        if (formData.get("payment") === "Credit / debit card") {
+          await startCardCheckout(formData);
+          return;
+        }
         const message = checkoutMessage(formData);
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
         cart = {};
@@ -3194,6 +3301,8 @@
       renderFilters();
       renderProducts();
       renderCart();
+      updateCardCheckoutOption();
+      handlePesapalReturn();
     </script>
   </body>
 </html>
