@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="550" viewBox="0 0 1000 688" fill="none">
+  <defs>
+    <linearGradient id="background" x1="120" y1="60" x2="1430" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#EAF2F7"/>
+    </linearGradient>
+    <filter id="shadow" x="60" y="275" width="1480" height="710" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="16"/>
+      <feGaussianBlur stdDeviation="16"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.08 0 0 0 0 0.16 0 0 0 0 0.24 0 0 0 0.12 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1L10 6L1 11" stroke="#5289AD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <g transform="scale(.625)">
+  <rect width="1600" height="1100" fill="url(#background)"/>
+  <circle cx="1490" cy="170" r="210" fill="#D7E8F3" opacity=".55"/>
+  <circle cx="80" cy="940" r="230" fill="#DCEAF2" opacity=".6"/>
+
+  <rect x="86" y="66" width="54" height="5" rx="2.5" fill="#BA7457"/>
+  <text x="86" y="113" fill="#193C56" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="3">DICKYS STOREFRONT</text>
+  <text x="86" y="192" fill="#20241F" font-family="Georgia, 'Times New Roman', serif" font-size="55" font-weight="600" letter-spacing="-1.5">Publish with GitHub Pages</text>
+  <text x="88" y="236" fill="#6C7680" font-family="Arial, Helvetica, sans-serif" font-size="20">Choose GitHub Actions as the deployment source for the website.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="100" y="299" width="1400" height="638" rx="18" fill="white"/>
+    <path d="M118 299H1482C1491.94 299 1500 307.059 1500 317V358H100V317C100 307.059 108.059 299 118 299Z" fill="#F6F8FA"/>
+    <circle cx="133" cy="329" r="7" fill="#D0D7DE"/>
+    <circle cx="158" cy="329" r="7" fill="#D0D7DE"/>
+    <circle cx="183" cy="329" r="7" fill="#D0D7DE"/>
+    <rect x="397" y="313" width="804" height="31" rx="7" fill="white" stroke="#D8DEE4"/>
+    <text x="426" y="334" fill="#6C7680" font-family="Arial, Helvetica, sans-serif" font-size="13">github.com/KeygraphHQ/shannon/settings/pages</text>
+
+    <rect x="100" y="358" width="1400" height="87" fill="white"/>
+    <path d="M100 444.5H1500" stroke="#D8DEE4"/>
+    <circle cx="145" cy="401" r="22" fill="#20241F"/>
+    <path d="M145 383C135.059 383 127 391.059 127 401C127 408.961 132.168 415.714 139.33 418.258C139.944 418.371 140.169 417.99 140.169 417.658C140.169 417.36 140.158 416.377 140.152 415.068C135.093 416.168 134.325 412.924 134.325 412.924C133.762 411.49 132.947 411.109 132.947 411.109C131.811 410.332 133.033 410.348 133.033 410.348C134.288 410.436 134.948 411.636 134.948 411.636C136.065 413.55 137.877 413.01 140.192 412.218C140.3 411.409 140.632 410.858 141.002 410.547C136.963 410.078 132.716 408.527 132.716 401.945C132.716 400.07 133.387 398.538 134.748 397.334C134.571 396.89 133.978 395.124 134.922 392.779C134.922 392.779 136.36 392.318 139.916 394.726C141.283 394.346 142.75 394.157 144.207 394.151C145.67 394.157 147.135 394.346 148.505 394.726C152.057 392.318 153.492 392.779 153.492 392.779C154.439 395.124 153.846 396.89 153.67 397.334C155.034 398.538 155.699 400.07 155.699 401.945C155.699 408.543 151.445 410.073 147.393 410.533C147.857 410.934 148.27 411.718 148.27 412.918C148.27 414.638 148.254 416.022 148.254 417.658C148.254 417.994 148.476 418.379 149.105 418.257C156.264 415.71 161.429 408.959 161.429 401C161.429 391.059 153.371 383 143.429 383H145Z" fill="white"/>
+    <text x="186" y="395" fill="#20241F" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="600">KeygraphHQ / shannon</text>
+    <text x="187" y="420" fill="#6C7680" font-family="Arial, Helvetica, sans-serif" font-size="14">Public repository</text>
+
+    <rect x="101" y="445" width="273" height="491" fill="#FBFCFD"/>
+    <path d="M373.5 445V936" stroke="#D8DEE4"/>
+    <text x="133" y="486" fill="#6C7680" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1">GENERAL</text>
+    <text x="133" y="525" fill="#404A53" font-family="Arial, Helvetica, sans-serif" font-size="16">Code</text>
+    <text x="133" y="566" fill="#404A53" font-family="Arial, Helvetica, sans-serif" font-size="16">Collaborators</text>
+    <text x="133" y="624" fill="#6C7680" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1">CODE AND AUTOMATION</text>
+    <rect x="116" y="647" width="242" height="49" rx="8" fill="#DDECF5"/>
+    <rect x="116" y="655" width="4" height="33" rx="2" fill="#5289AD"/>
+    <text x="145" y="678" fill="#193C56" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Pages</text>
+    <text x="133" y="737" fill="#404A53" font-family="Arial, Helvetica, sans-serif" font-size="16">Actions</text>
+    <text x="133" y="778" fill="#404A53" font-family="Arial, Helvetica, sans-serif" font-size="16">Environments</text>
+
+    <text x="419" y="500" fill="#20241F" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">Pages</text>
+    <text x="419" y="535" fill="#57616A" font-family="Arial, Helvetica, sans-serif" font-size="15">Build and deployment</text>
+    <path d="M419 552H1459" stroke="#D8DEE4"/>
+    <text x="419" y="603" fill="#20241F" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Source</text>
+    <text x="419" y="632" fill="#57616A" font-family="Arial, Helvetica, sans-serif" font-size="14">Choose how GitHub Pages builds and deploys your site.</text>
+    <rect x="419" y="654" width="560" height="56" rx="8" fill="white" stroke="#D8DEE4"/>
+    <text x="442" y="688" fill="#24292F" font-family="Arial, Helvetica, sans-serif" font-size="15">GitHub Actions</text>
+    <path d="m945 679 7 7 7-7" stroke="#57616A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="419" y="654" width="560" height="56" rx="8" stroke="#5289AD" stroke-width="3"/>
+
+    <text x="419" y="768" fill="#20241F" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Your site will be published automatically</text>
+    <text x="419" y="798" fill="#57616A" font-family="Arial, Helvetica, sans-serif" font-size="14">After the deployment workflow is merged into the main branch.</text>
+    <rect x="419" y="823" width="589" height="48" rx="8" fill="#F6F8FA"/>
+    <circle cx="444" cy="847" r="10" fill="#5289AD"/>
+    <path d="M444 841v7m0 4v.1" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    <text x="464" y="852" fill="#404A53" font-family="Arial, Helvetica, sans-serif" font-size="13">No separate Save button—selecting the source applies the setting.</text>
+  </g>
+
+  <path d="M296 755H347V671H379" stroke="#5289AD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+  <circle cx="296" cy="755" r="22" fill="#5289AD"/>
+  <text x="289" y="762" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">1</text>
+  <rect x="83" y="692" width="225" height="108" rx="14" fill="#193C56"/>
+  <circle cx="111" cy="724" r="15" fill="#5289AD"/>
+  <text x="106" y="730" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700">1</text>
+  <text x="136" y="728" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Open repository</text>
+  <text x="104" y="761" fill="#D5E3EC" font-family="Arial, Helvetica, sans-serif" font-size="14">Go to KeygraphHQ / shannon</text>
+  <text x="104" y="783" fill="#D5E3EC" font-family="Arial, Helvetica, sans-serif" font-size="14">and open Settings.</text>
+
+  <path d="M298 893H347V671H379" stroke="#5289AD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+  <circle cx="298" cy="893" r="22" fill="#5289AD"/>
+  <text x="291" y="900" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">2</text>
+  <rect x="84" y="830" width="224" height="88" rx="14" fill="#193C56"/>
+  <circle cx="111" cy="858" r="15" fill="#5289AD"/>
+  <text x="106" y="864" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700">2</text>
+  <text x="136" y="862" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">Choose Pages</text>
+  <text x="104" y="895" fill="#D5E3EC" font-family="Arial, Helvetica, sans-serif" font-size="14">Find it in the left sidebar.</text>
+
+  <rect x="100" y="969" width="1400" height="80" rx="12" fill="#EAF2F7"/>
+  <circle cx="137" cy="1009" r="18" fill="#5289AD"/>
+  <path d="M137 1001v10m0 5v.1" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="169" y="1005" fill="#193C56" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">Admin access required</text>
+  <text x="169" y="1028" fill="#4F6474" font-family="Arial, Helvetica, sans-serif" font-size="14">Only a repository administrator can change Pages settings. Ask an admin if you can’t see this option.</text>
+  <text x="1461" y="1022" fill="#6C7680" font-family="Arial, Helvetica, sans-serif" font-size="12" text-anchor="end">Settings → Pages → Source → GitHub Actions</text>
+  </g>
+</svg>
