@@ -3021,20 +3021,28 @@
           area === "nairobi" ? (sum >= 5000 ? "Free" : "KSh 300") : "To be confirmed";
         const total = area === "nairobi" ? money(sum + (sum >= 5000 ? 0 : 300)) : `${money(sum)} + delivery`;
         return [
-          "Hello Dickys, I’d like to place an order:",
+          "Hello Dickys team, ✨",
+          "I’d love to order these pieces from The Glass Habitat.",
           "",
+          "MY SELECTION",
           ...lines,
           "",
+          "ORDER SUMMARY",
           `Subtotal: ${money(sum)}`,
           `Delivery: ${delivery}`,
           `Estimated total: ${total}`,
           "",
+          "DELIVERY DETAILS",
           `Name: ${formData.get("name")}`,
           `Phone: ${formData.get("phone")}`,
           `Email: ${formData.get("email") || "Not provided"}`,
-          `Delivery area: ${area === "nairobi" ? "Nairobi" : "Outside Nairobi"}`,
+          `Destination: ${area === "nairobi" ? "Nairobi" : "Outside Nairobi"}`,
           `Address: ${formData.get("address")}`,
-          `Payment: ${payment}${payment === "M-Pesa" ? " (Paybill 542542, account 98736)" : ""}`,
+          "",
+          "PAYMENT PREFERENCE",
+          `${payment}${payment === "M-Pesa" ? " — Paybill 542542, account 98736" : ""}`,
+          "",
+          "Please confirm availability and the final delivery amount, then let me know the next steps. Thank you!",
         ].join("\n");
       }
 
@@ -3143,12 +3151,17 @@
         const data = new FormData(event.currentTarget);
         const quantity = data.get("quantity") || "To be discussed";
         const message = [
-          "Hello Dickys, I’m interested in a custom order.",
+          "Hello Dickys team, ✨",
+          "I’d love to discuss a custom-made glass piece.",
           "",
+          "PROJECT DETAILS",
           `Name: ${data.get("name")}`,
           `Phone: ${data.get("phone")}`,
-          `Item: ${data.get("type")} × ${quantity}`,
-          `Details: ${data.get("details")}`,
+          `Piece or collection: ${data.get("type")}`,
+          `Quantity: ${quantity}`,
+          `My idea: ${data.get("details")}`,
+          "",
+          "Please let me know what may be possible, the estimated timeline, and a quote. Thank you!",
         ].join("\n");
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
         document.querySelector("#customStatus").textContent = "Your message is ready in WhatsApp. We look forward to hearing from you.";
