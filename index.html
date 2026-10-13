@@ -2472,7 +2472,7 @@
             </details>
             <details>
               <summary>How do I pay?</summary>
-              <p>We accept M-Pesa Paybill 542542 (account 98736), PayPal, Visa and Mastercard. Cash on delivery is also available within Nairobi. We’ll confirm your order and share payment instructions on WhatsApp.</p>
+              <p>Pay via I&amp;M Bank M-Pesa Paybill 542542, account 98736. We also accept PayPal, Visa and Mastercard. Cash on delivery is also available within Nairobi. We’ll confirm your order and share payment instructions on WhatsApp.</p>
             </details>
             <details>
               <summary>Can I request a different size or colour?</summary>
@@ -2622,7 +2622,7 @@
           <input class="field" name="address" autocomplete="street-address" placeholder="Street / estate / town" required />
           <span class="variant-label" style="margin: 0">How would you like to pay?</span>
           <div class="radio-row">
-            <label><input type="radio" name="payment" value="M-Pesa" checked /> M-Pesa</label>
+            <label><input type="radio" name="payment" value="M-Pesa" checked /> I&amp;M Bank M-Pesa · Paybill 542542</label>
             <label><input type="radio" name="payment" value="PayPal" /> PayPal</label>
             <label><input type="radio" name="payment" value="Visa / Mastercard" /> Visa / Mastercard</label>
             <label><input type="radio" name="payment" value="Cash on delivery" /> Cash on delivery (Nairobi)</label>
@@ -3040,7 +3040,7 @@
           `Address: ${formData.get("address")}`,
           "",
           "PAYMENT PREFERENCE",
-          `${payment}${payment === "M-Pesa" ? " — Paybill 542542, account 98736" : ""}`,
+          `${payment}${payment === "M-Pesa" ? " — I&M Bank Paybill 542542, account 98736" : ""}`,
           "",
           "Please confirm availability and the final delivery amount, then let me know the next steps. Thank you!",
         ].join("\n");
