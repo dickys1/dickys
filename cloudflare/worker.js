@@ -155,6 +155,12 @@ function validateCheckout(body) {
   if (!phone) {
     return { error: 'Enter a valid Kenyan phone number.' };
   }
+  if (
+    body.giftMessage !== undefined &&
+    (typeof body.giftMessage !== 'string' || body.giftMessage.length > 180)
+  ) {
+    return { error: 'Please shorten the gift message to 180 characters or fewer.' };
+  }
   if (!Array.isArray(body.items) || body.items.length < 1 || body.items.length > MAX_ORDER_ITEMS) {
     return { error: 'Your bag is empty or contains too many items.' };
   }
@@ -191,6 +197,7 @@ function validateCheckout(body) {
       email: customer.email.trim(),
       phone,
       address: customer.address.trim(),
+      giftMessage: body.giftMessage?.trim() || '',
     },
     items,
     subtotal,
@@ -214,7 +221,10 @@ async function submitCheckout(request, env, body) {
   const description = order.items
     .map((item) => `${item.quantity} x ${item.name} (${item.variant})`)
     .join(', ')
-    .slice(0, 100);
+    .slice(0, order.customer.giftMessage ? 65 : 100);
+  const giftNote = order.customer.giftMessage
+    ? ` Gift: ${order.customer.giftMessage}`
+    : '';
 
   const response = await fetch(`${apiBase(environment)}/Transactions/SubmitOrderRequest`, {
     method: 'POST',
@@ -227,7 +237,7 @@ async function submitCheckout(request, env, body) {
       id: merchantReference,
       currency: 'KES',
       amount: order.total,
-      description: `Dickys order: ${description}`,
+      description: `Dickys order: ${description}${giftNote}`.slice(0, 100),
       callback_url: `${SITE_URL}?payment=pesapal-return`,
       notification_id: notificationId,
       billing_address: {
@@ -272,6 +282,25 @@ async function getTransactionStatus(env, orderTrackingId) {
     signal: AbortSignal.timeout(15000),
   });
   return readProviderResponse(response);
+}
+
+async function handleCheckoutConfig(request, env) {
+  const origin = request.headers.get('Origin');
+  if (origin !== SITE_ORIGIN) {
+    return jsonResponse({ error: 'Request origin is not allowed.' }, 403, origin);
+  }
+
+  if (env.PESAPAL_ENV !== 'live') {
+    return jsonResponse({ enabled: false, mode: 'sandbox' }, 200, origin);
+  }
+
+  try {
+    await getAccessToken(env);
+    return jsonResponse({ enabled: true, mode: 'live' }, 200, origin);
+  } catch (error) {
+    console.warn('Live card checkout is not ready.', error instanceof Error ? error.message : 'Unknown error');
+    return jsonResponse({ enabled: false, mode: 'live' }, 200, origin);
+  }
 }
 
 function paymentState(result) {
@@ -328,6 +357,9 @@ export default {
     try {
       if (url.pathname === '/api/ipn' && request.method === 'GET') {
         return await handleIpn(request, env);
+      }
+      if (url.pathname === '/api/config' && request.method === 'GET') {
+        return await handleCheckoutConfig(request, env);
       }
       if (url.pathname === '/api/status' && request.method === 'GET') {
         return await handleStatus(request, env);

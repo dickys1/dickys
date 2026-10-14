@@ -17,15 +17,20 @@ their status without receiving or storing card numbers.
    credentials for testing; never put credentials in website code or GitHub
    commits.
 4. In `payment-config.js`, set `window.DICKYS_PESAPAL_CHECKOUT_URL` to the
-   deployed HTTPS Worker URL, then commit the change to `main`. The Pages
-   deployment will enable the card option once that URL is present.
+   deployed HTTPS Worker URL and publish the change. The storefront checks the
+   Worker before enabling cards; sandbox mode and missing or invalid live
+   credentials keep card checkout disabled.
 5. Test a complete sandbox payment. For live payments, obtain production
    credentials from Pesapal, switch `PESAPAL_ENV` in `cloudflare/wrangler.toml`
    to `live`, add the production secrets in Cloudflare, and deploy again.
-   Confirm card payments are enabled for the Pesapal merchant account.
+   The card option becomes available only after the live Worker successfully
+   authenticates with Pesapal. A completed sandbox flow is not proof that live
+   card processing is ready.
 
 Online card checkout is limited to Nairobi while nationwide delivery charges
-are confirmed separately. Other payment choices continue through WhatsApp.
-The Worker registers its Pesapal IPN endpoint automatically and checks the
-transaction status directly with Pesapal before displaying a successful
-payment confirmation.
+are confirmed separately, and customers continue on Pesapal's secure hosted
+payment page to enter card details. Other payment choices continue through
+WhatsApp. The Worker registers its Pesapal IPN endpoint automatically and
+checks the transaction status directly with Pesapal before displaying a
+successful payment confirmation. Never collect card details on GitHub Pages
+or store them in the Worker.
